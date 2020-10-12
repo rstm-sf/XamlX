@@ -9,7 +9,12 @@ on:
 jobs:
   build:
 
-    runs-on: [windows-latest, ubuntu-latest]
+    strategy:
+      matrix:
+        os: [ windows-latest ]
+
+    name: Build ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
 
     steps:
     - uses: actions/checkout@v2
