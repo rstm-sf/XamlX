@@ -6,6 +6,13 @@
         <IsCheckMsil>False</IsCheckMsil>
     </PropertyGroup>
 
+    <ItemGroup Condition=" '$(TargetFramework)' == 'net47' ">
+        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
     <PropertyGroup Condition=" '$(IsCheckMsil)'=='True' ">
         <DefineConstants>CHECK_MSIL;$(DefineConstants)</DefineConstants>
     </PropertyGroup>
