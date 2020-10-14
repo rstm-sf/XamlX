@@ -12,6 +12,8 @@ namespace XamlParserTests
 {
     public partial class CompilerTestBase
     {
+        private readonly string _selfDirectory;
+
         static CecilTypeSystem CreateCecilTypeSystem()
         {
             var self = typeof(CompilerTestBase).Assembly.GetModules()[0].FullyQualifiedName;
@@ -27,10 +29,12 @@ namespace XamlParserTests
 
         public CompilerTestBase() : this(CreateCecilTypeSystem())
         {
-            
+            _selfDirectory = Path.GetDirectoryName(typeof(CompilerTestBase).Assembly.Location);
+#if NET47
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+#endif
         }
-        
-        
+
         protected (Func<IServiceProvider, object> create, Action<IServiceProvider, object> populate) Compile(
             string xaml)
         {
@@ -66,5 +70,13 @@ namespace XamlParserTests
 
             return GetCallbacks(t);
         }
+
+#if NET47
+        private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            var name = args.Name.Split(',').First() + ".dll";
+            return Assembly.LoadFile(Path.Combine(_selfDirectory, name));
+        }
+#endif
     }
 }
