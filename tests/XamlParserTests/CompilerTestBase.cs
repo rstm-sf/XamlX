@@ -10,9 +10,11 @@ using XamlX.Transform;
 using XamlX.TypeSystem;
 using XamlX.IL;
 using XamlX.Emit;
+using Xunit;
 
 namespace XamlParserTests
 {
+    [Collection("Sequential")]
     public partial class CompilerTestBase
     {
 #if CHECK_MSIL
