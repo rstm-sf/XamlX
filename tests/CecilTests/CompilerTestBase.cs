@@ -30,7 +30,7 @@ namespace XamlParserTests
         public CompilerTestBase() : this(CreateCecilTypeSystem())
         {
             _selfDirectory = Path.GetDirectoryName(typeof(CompilerTestBase).Assembly.Location);
-#if NET47
+#if NETFRAMEWORK
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 #endif
         }
@@ -71,7 +71,7 @@ namespace XamlParserTests
             return GetCallbacks(t);
         }
 
-#if NET47
+#if NETFRAMEWORK
         private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
             var name = args.Name.Split(',').First() + ".dll";
