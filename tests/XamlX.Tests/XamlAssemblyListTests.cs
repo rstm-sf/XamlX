@@ -16,6 +16,10 @@ namespace XamlX.Tests
                 .GetValue(null);
         }
 
+        [Fact()]
+        public void InitCapacity_Is_Greater_Than_Zero() =>
+            Assert.True(_initCapacity > 0);
+
         [Fact]
         public void Add_Item_Count_Increased_For()
         {
