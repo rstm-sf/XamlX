@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  configuration: Release
+
 jobs:
   build:
 
@@ -22,22 +25,19 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.402
+        dotnet-version: 3.1.x
 
-    - name: Build CecilNetstandardTests
-      run: dotnet build tests/CecilNetstandardTests/CecilNetstandardTests.csproj
-    - name: Build CecilTests
-      run: dotnet build tests/CecilTests/CecilTests.csproj
+    - name: Build tests
+      working-directory: tests
+      run: |
+          dotnet build -c ${{ env.configuration }} CecilNetstandardTests/CecilNetstandardTests.csproj
+          dotnet build -c ${{ env.configuration }} CecilTests/CecilTests.csproj
+          dotnet build -c ${{ env.configuration }} XamlParserTests/XamlParserTests.csproj
+          dotnet build -c ${{ env.configuration }} XamlX.Tests/XamlX.Tests.csproj
 
-    - name: Test for netcoreapp3.1
-      run: dotnet test --framework netcoreapp3.1
+    - name: Run tests netcoreapp3.1
+      run: dotnet test -c ${{ env.configuration }} --no-build --framework netcoreapp3.1
 
-    - name: Test for net47 CecilNetstandardTests
+    - name: Run tests net47
       if: matrix.os == 'windows-latest'
-      run: dotnet test --framework net47 tests/CecilNetstandardTests/CecilNetstandardTests.csproj
-    - name: Test for net47 CecilTests
-      if: matrix.os == 'windows-latest'
-      run: dotnet test --framework net47 tests/CecilTests/CecilTests.csproj
-    - name: Test for net47 XamlParserTests
-      if: matrix.os == 'windows-latest'
-      run: dotnet test --framework net47 tests/XamlParserTests/XamlParserTests.csproj
+      run: dotnet test -c ${{ env.configuration }} --no-build --framework net47
